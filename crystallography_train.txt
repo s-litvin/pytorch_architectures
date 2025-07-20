@@ -1,0 +1,4 @@
+Crystallography is the experimental science of determining the arrangement of atoms in solids.
+X-ray diffraction is one of the primary methods used in crystallography.
+In crystallographic analysis, the unit cell dimensions are crucial for determining the symmetry.
+The Bragg equation relates the wavelength of X-rays to the diffraction angle and lattice spacing.

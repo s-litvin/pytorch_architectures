@@ -1,0 +1,3 @@
+The Miller indices describe the orientation of planes in a crystal lattice.
+Electron diffraction is useful in determining the structure of thin films and nanocrystals.
+The concept of reciprocal space is central to the analysis of diffraction patterns.
