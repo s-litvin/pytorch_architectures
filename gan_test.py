@@ -95,13 +95,11 @@ for epoch in range(epochs):
 real_samples = get_real_data(100).to(device).detach().cpu().numpy()
 noise = torch.randn(100, latent_dim).to(device)
 generated_samples = G(noise).detach().cpu().numpy()
-print("Сгенерированные данные:")
+print("Data:")
 print(generated_samples)
 
-# --- Построим общий рисунок с 2 графиками ---
 fig, axs = plt.subplots(2, 1, figsize=(8, 10))
 
-# График потерь
 axs[0].plot(losses_D, label='Discriminator Loss')
 axs[0].plot(losses_G, label='Generator Loss')
 axs[0].set_title('GAN Losses')
@@ -110,19 +108,17 @@ axs[0].set_ylabel('Loss')
 axs[0].legend()
 axs[0].grid(True)
 
-# График реальных и сгенерированных точек
 axs[1].scatter(real_samples[:,0], real_samples[:,1], color='blue', alpha=0.5, label='Real data')
 axs[1].scatter(generated_samples[:,0], generated_samples[:,1], color='red', alpha=0.5, label='Generated data')
 axs[1].set_title('Real vs Generated Data')
 axs[1].legend()
 axs[1].grid(True)
 
-# Сохраняем
 plt.tight_layout()
 plt.savefig('loss_and_data.png')
 plt.close()
 
-print("График сохранён как 'loss_and_data.png'")
+print("saved to 'loss_and_data.png'")
 
 
 
