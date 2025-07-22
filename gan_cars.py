@@ -6,7 +6,6 @@ import torchvision.transforms as T
 import torchvision.utils as vutils
 from torch.utils.data import DataLoader, Subset
 
-# --- Параметры ---
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("Device available:", device)
 
@@ -17,7 +16,6 @@ lr = 0.001
 beta1 = 0.5
 latent_dim = 100
 
-# --- Подготовка датасета CIFAR‑10 (только класс "automobile") ---
 transform = T.Compose([
     T.Resize(image_size),
     T.ToTensor(),
@@ -32,7 +30,7 @@ car_indices = [i for i, (_, label) in enumerate(dataset) if label == 1]
 subset = Subset(dataset, car_indices)
 loader = DataLoader(subset, batch_size=batch_size, shuffle=True, num_workers=2)
 
-# --- Архитектура DCGAN ---
+# DCGAN
 def weights_init(m):
     classname = m.__class__.__name__
     if hasattr(m, 'weight') and ('Conv' in classname or 'BatchNorm' in classname):
@@ -84,13 +82,11 @@ fixed_noise = torch.randn(64, latent_dim, 1, 1, device=device)
 optimizerD = optim.Adam(netD.parameters(), lr=lr, betas=(beta1, 0.999))
 optimizerG = optim.Adam(netG.parameters(), lr=lr, betas=(beta1, 0.999))
 
-# --- Тренировочный цикл ---
 real_label = 1.
 fake_label = 0.
 
 for epoch in range(epochs):
     for i, data in enumerate(loader, 0):
-        # Обучаем дискриминатор
         netD.zero_grad()
         real = data[0].to(device)
         b_size = real.size(0)
@@ -107,7 +103,6 @@ for epoch in range(epochs):
         errD_fake.backward()
         optimizerD.step()
 
-        # Обучаем генератор
         netG.zero_grad()
         label.fill_(real_label)
         output = netD(fake)
@@ -115,7 +110,6 @@ for epoch in range(epochs):
         errG.backward()
         optimizerG.step()
 
-    # Сохраняем сэмпл
     with torch.no_grad():
         fake = netG(fixed_noise).detach().cpu()
     vutils.save_image(fake, f'samples_epoch_{epoch+1}.png',
@@ -124,4 +118,4 @@ for epoch in range(epochs):
 
 torch.save(netG.state_dict(), "generator.pth")
 torch.save(netD.state_dict(), "discriminator.pth")
-print("Обучение завершено, модели сохранены.")
+print("Done")
